@@ -3,10 +3,7 @@
 #
 # [SNIPPET_NAME: Threaded Server]
 # [SNIPPET_CATEGORIES: Python Core, socket, threading]
-# [SNIPPET_DESCRIPTION: Simple example of Python's socket and threading modules]
-# [SNIPPET_DOCS: http://docs.python.org/library/socket.html, http://docs.python.org/library/threading.html]
-# [SNIPPET_AUTHOR: Gonzalo  <gnunezr@gmail.com>]
-# [SNIPPET_LICENSE: GPL]
+
 
 # -*- coding: utf-8 -*-
 import os,sys
@@ -32,7 +29,7 @@ files_dir =settings.files_dir
 #
 # from 数据库
 #pre_url = 'https://web.immomo.com/live/%s'
-#db = MySql('10.13.38.44',3307, 'crawler', 'crawlerQaz', 'chaser')
+#db = MySql('ip',3307, 'user', 'pwd', 'db')
 #urls = db.select('''
 #        select DISTINCT momoid from momoid_list list''')
 #task_list = [pre_url %str(x[0]) for x in urls]
@@ -55,21 +52,11 @@ flag = int(math.ceil(len(task_list)/float(flag_num)))
 
 
 class ClientThread( threading.Thread ):
-    ''' 
-    Class that implements the client threads in this server
-    '''
     def __init__( self, client_sock ):
-        '''
-        Initialize the object, save the socket that this thread will use.
-        '''
         threading.Thread.__init__( self )
         self.client = client_sock
 
     def run( self ):
-        ''' 
-        Thread's main loop. Once this function returns, the thread is finished 
-        and dies. 
-        '''
         #
         # Need to declare QUIT as global, since the method can change it
         #
@@ -111,17 +98,11 @@ class ClientThread( threading.Thread ):
                     print 'get cmd error:',e
 
             cmd = self.readline()
-        #
-        # Make sure the socket is closed once we're done with it
-        #
+
         self.client.close()
         return
 
     def readline( self ):
-        ''' 
-        Helper function, reads up to 1024 chars from the socket, and returns 
-        them as a string, all letters in lowercase, and without any end of line 
-        markers '''
         try:
             result = self.client.recv( 102400 )
             if( None != result ):
@@ -131,10 +112,6 @@ class ClientThread( threading.Thread ):
             return None
 
     def writeline( self, text ):
-        ''' 
-        Helper function, writes teh given string to the socket, with an end of 
-        line marker appended at the end 
-        '''
         # print text
         try:
             self.client.send( text.strip() + '\n' )
@@ -142,22 +119,11 @@ class ClientThread( threading.Thread ):
             pass
 
 class Server:
-    ''' 
-    Server class. Opens up a socket and listens for incoming connections.
-    Every time a new connection arrives, it creates a new ClientThread thread
-    object and defers the processing of the connection to it. 
-    '''
     def __init__( self ):
         self.sock = None
         self.thread_list = []
 
     def run( self ):
-        '''
-        Server main loop. 
-        Creates the server (incoming) socket, and listens on it of incoming
-        connections. Once an incomming connection is deteceted, creates a 
-        ClientThread to handle it, and goes back to listening mode.
-        '''
         all_good = False
         try_count = 0
         #
@@ -241,11 +207,7 @@ class Server:
                 self.thread_list.append( new_thread )
                 new_thread.start()
 
-                #
-                # Go over the list of threads, remove those that have finished
-                # (their run method has finished running) and wait for them 
-                # to fully finish
-                #
+
                 for thread in self.thread_list:
                     if not thread.isAlive():
                         self.thread_list.remove( thread )
@@ -256,13 +218,7 @@ class Server:
         except Exception, err:
             print 'Exception caught: %s\nClosing...' % err
 
-        #
-        # Clear the list of threads, giving each thread 1 second to finish
-        # NOTE: There is no guarantee that the thread has finished in the
-        #    given time. You should always check if the thread isAlive() after
-        #    calling join() with a timeout paramenter to detect if the thread
-        #    did finish in the requested time
-        #
+        
         for thread in self.thread_list:
             thread.join( 1.0 )
         #
