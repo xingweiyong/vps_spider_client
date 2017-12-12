@@ -95,4 +95,4 @@ if __name__ == "__main__":
             aa.connect()
         except:
             pass
-        check_tcp_status("111.202.121.79", 12346,'ready')
+        check_tcp_status("ip", port,'ready')
