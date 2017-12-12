@@ -133,7 +133,7 @@ class MySql():
         self.conn.close()
 
 if __name__ == '__main__':
-    db = MySql(host='10.13.38.23', port=3307, user="crawler", password="crawlerQaz", db="chaser")
+    db = MySql(host='ip', port=3307, user="username", password="pwd", db="db")
     # db =MySql('localhost','root','1111','jdjr_data')
     dic = {'title':'eee','num':'233','crawl_time':'2016-09-06 11:17:32.000000'}
     #db.insert(dic)
