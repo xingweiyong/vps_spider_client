@@ -160,7 +160,7 @@ def worker_parse_detail(url,brand,dl,mutex):
 
             mutex.acquire()
             try:
-                db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+                db = MySql('ip', 3306, 'root', 'pwd', 'db')
                 db.insert_single('''INSERT INTO tmall_product(sku_id,product_id,cat_name,title,price,crawl_time,brand,sales,shop_name,flag,price_range,cat_id,worker_num)VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')'''%(
                     item['sku_id'],item['product_id'],item['cat_name'],item['title'],item['price'],item['crawl_time_stamp'],item['brand'],item['sales'],item['shop_name'],item['flag'],item['price_range'],item['cat_id'],item['worker_num']))
                 db.close()
@@ -262,7 +262,7 @@ def crawler_tmall(final_url, total_num, dl,mutex):
                     print u'worker_product failure more than 3,break... '
                     break
         # successfully received msg update to db
-        db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+        db = MySql('ip', 3306, 'root', 'pwd', 'db')
         shop_url = url
         db.update("""update tmall_shop_url set status = 2 where shop_url = '%s'"""%shop_url)
         db.close()
