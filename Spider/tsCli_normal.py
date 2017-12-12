@@ -56,7 +56,7 @@ def check_tcp_status(ip, port,message):
             
             if data['task'] != 'no more':
                 # successfully received msg update to db
-                db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+                db = MySql('ip', 3306, 'root', 'pwd', 'db')
                 for each_task in data['task']['task_list']:
                     task_url = each_task
                     db.update("""update task_list set status = 1 where task_item = '%s'"""%task_url)
@@ -95,4 +95,4 @@ if __name__ == "__main__":
             aa.connect()
         except:
             pass
-        check_tcp_status("111.202.121.79", 12345,'ready')
+        check_tcp_status("ip", port,'ready')
