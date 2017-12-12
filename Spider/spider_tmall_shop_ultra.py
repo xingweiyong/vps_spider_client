@@ -289,7 +289,7 @@ def worker_shop(final_url, total_num, dl):
                             shop_cat_set.add((user_id,cat_id))
                             mutex.acquire()
                             try:
-                                db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+                                db = MySql('ip', 3306, 'root', 'pwd', 'db')
                                 db.insert_single('''INSERT INTO tmall_shop_url(cat_id,shop_url,brands)VALUES ('%s','%s','%s')'''%(cat_id,url_more,shop_brand))
                                 db.close()
                             except Exception,e:
@@ -346,7 +346,7 @@ def crawler_tmall_shop_ultra(final_url, total_num, dl,mutex):
             run_parse_html(1) # thread num
             # 更新记录数据库和文件
             # successfully received msg update to db
-            db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+            db = MySql('ip', 3306, 'root', 'pwd', 'db')
             db.update("""update task_list set status = 2 where task_item = '%s'"""%task_item)
             db.close()
             func_name = get_func_name()
