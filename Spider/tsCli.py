@@ -50,7 +50,7 @@ def check_tcp_status(ip, port,message):
             
             if data['task'] != 'no more':
                 # successfully received msg update to db
-                db = MySql('36.110.128.75', 3306, 'root', 'Bigdata1234', 'charser')
+                db = MySql('ip', 3306, 'root', 'pwd', 'db')
                 for each_task in data['task']['detail']:
                     shop_url = each_task.split('&/#')[0]
                     db.update("""update tmall_shop_url_2 set status = 1 where shop_url = '%s'"""%shop_url)
